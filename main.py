@@ -13,8 +13,6 @@ food_colour = (255, 165, 0)  # food
 score_colour = (255, 0, 165)  # score
 width, height = 600, 400
 
-
-
 game_display = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Perry the Python")
 
@@ -30,7 +28,10 @@ score_font = pygame.font.SysFont('ubuntu', 25)
 def draw_score(score):
     text = score_font.render("Score: " + str(score), True, score_colour)
     game_display.blit(text, [0, 0])
-
+def draw_highscore():
+    score = int(open('highscore.txt', 'r').read())
+    text = score_font.render("HighScore: " + str(score), True, score_colour)
+    game_display.blit(text, [width/2, 0])
 
 def draw_snake(snake_size, snake_pixels):
     for pixel in snake_pixels:
@@ -61,6 +62,7 @@ def run_game():
             game_over_message = message_font.render("Game Over!", True, game_over_message_colour)
             game_display.blit(game_over_message, [width / 3, height / 3])
             draw_score(snake_length - 1)
+            draw_highscore()
             pygame.display.update()
 
             for event in pygame.event.get():
@@ -110,6 +112,7 @@ def run_game():
                 game_close = True
         draw_snake(snake_size, snake_pixels)
         draw_score(snake_length - 1)
+        draw_highscore()
 
         pygame.display.update()
 
@@ -119,6 +122,11 @@ def run_game():
             target_x = round(random.randrange(0, width - snake_size) / 10.0 * 10)
             target_y = round(random.randrange(0, height - snake_size) / 10.0 * 10)
             snake_length += 1
+
+        highscore = int(open('highscore.txt', 'r').read())
+        if snake_length - 1 > highscore:
+            with open('highscore.txt', 'w') as f:
+                f.write(str(snake_length - 1))
 
         clock.tick(snake_speed)
 
