@@ -13,6 +13,8 @@ food_colour = (255, 165, 0)  # food
 score_colour = (255, 0, 165)  # score
 width, height = 600, 400
 
+
+
 game_display = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Perry the Python")
 
@@ -51,6 +53,8 @@ def run_game():
     target_x = round(random.randrange(0, width - snake_size) / 10.0 * 10)
     target_y = round(random.randrange(0, height - snake_size) / 10.0 * 10)
 
+    lastKey = ""
+
     while not game_over:
         while game_close:
             game_display.fill(background_colour)
@@ -73,18 +77,19 @@ def run_game():
             if event.type == pygame.QUIT:
                 game_over = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT and lastKey != pygame.K_RIGHT:
                     x_speed = -snake_size
                     y_speed = 0
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT and lastKey != pygame.K_LEFT:
                     x_speed = snake_size
                     y_speed = 0
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP and lastKey != pygame.K_DOWN:
                     x_speed = 0
                     y_speed = -snake_size
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN and lastKey != pygame.K_UP:
                     x_speed = 0
                     y_speed = snake_size
+                lastKey = event.key
 
         if x >= width or x < 0 or y >= height or y < 0:
             game_close = True
