@@ -1,6 +1,11 @@
 import pygame
 import time
 import random
+import os.path
+
+if not os.path.exists('highscore.txt'):
+    with open('highscore.txt', 'w') as f:
+        f.write(str(0))
 
 # Initialise pygame
 pygame.init()
